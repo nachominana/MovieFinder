@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+     <link rel="stylesheet" href="css.css">
+    <title>Movie Finder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      var urlfilms = 'https://api.themoviedb.org/3'
+      var key = '0f17c2b22fa30b9bf08d944397f6bf02&language'
+      var urlimage =  'https://image.tmdb.org/t/p/w200'
+      var urlimage2 =  'https://image.tmdb.org/t/p/w400'
+      function find() {
+        let film = $('#movie').val()
+        let url = urlfilms + "/search/movie" + "?api_key=" + key + "&language=en-US&query=" + film
+        let i = 0
+        $.get(url,function(data){
+          if( $('#table').length >= 1){ $('#table').empty()}
+            let row = ""
+          data['results'].forEach(function f(val,index){
+            let titulo = val['title'];let idfilm = val['id'];let pathposter = val['poster_path'];let urlimg = urlimage + pathposter;
+            let column = "<td id=\"column\" onclick=\"details(" + idfilm + ")\"><img src=\"" + urlimg + "\" width=\"150\" alt=\"NO IMAGE\"><span> "+titulo+"</span></td>"
+            if(i % 3 == 0){
+               column = "<tr>" + column
+            }
+            if(i % 3 == 2){
+               column = column + "</tr>"
+            }
+            i++
+            row += column
+        })
+        $('#table').append(row)
+         })
+        
+        return false
+      }
+      function details(IdMovie){
+        let url = urlfilms + "/movie/" + IdMovie + "?api_key="  + key + "&language=en-US"
+        $.get(url,function(data){
+          let genre = ""
+          let name = data['title']
+          let posterUrl = urlimage2 + data['poster_path']
+          let date = data['release_date']
+          let description = data['overview']
+          let language = data['original_language']
+          data['genres'].forEach(function f(val,index){
+            genre += " " + val['name']
+          })
+
+          let valoration = data['vote_average']
+          if( $('#table').length >= 1){ $('#table').empty()}
+          let row = "<tr ><td id=\"peli\"><img id=\"details\" src=\"" + posterUrl +"\" width=400 alt=\"NO IMAGE\"><td><span>Name: </span>"+ name +"<br><span>Date: </span> "+ date +"<br><span>Language: </span> "+ language +"<br><span>Description: </span>"+ description +"<br><span>Genre: </span> "+ genre +"<br><span>Valoration: </span>" + valoration +"</td></td></tr>"
+         $('#table').append(row)
+        return false
+        })
+
+      }
+    </script>
+  </head>
+  <body>
+    <div id="buscador">
+      <h1>Movie finder</h1>
+      <form action="javascript:find()" method="dummy">
+        <input type="text" id="movie" placeholder="insert a film name">
+        <input type="submit" class="btn btn-outline-dark" value="Find">
+      </form>
+    </div>     
+    <div id="divtabla">
+      <table id="table"></table>
+    </div> 
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>   
+  </body>
+</html>
