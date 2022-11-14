@@ -1,0 +1,42 @@
+body{
+	background-color: lightgrey;
+	text-align: center;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+	padding-left: 5px;
+}
+
+td{
+	margin: 10px;
+	text-align: left;
+}
+
+span{
+	font-weight: bold;
+}
+
+#divtabla{
+	display: inline-block;
+	margin: 15px;
+	
+}
+#column:hover{
+	background-color: grey;
+}
+#buscador{
+	background-color: grey;
+	border-radius: 10px;
+	margin: 10px;
+}
+#details{	
+	border: 3px;
+	border-radius: 10px;
+	border-style: solid;
+	border-color: grey;
+}
+#peli{
+	padding-left: 15px;
+}
